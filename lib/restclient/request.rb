@@ -174,7 +174,9 @@ module RestClient
 					url = uri.to_s
 				end
 
-				raise Redirect, url
+				response_obj = Response.new("Redirect", res)
+
+				raise Redirect, [ url, response_obj ]
 			elsif res.code == "304"
 				raise NotModified, res
 			elsif res.code == "401"

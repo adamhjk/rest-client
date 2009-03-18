@@ -24,9 +24,11 @@ module RestClient
 	class Redirect < Exception
 		ErrorMessage = "Redirect"
 
-		attr_accessor :url
-		def initialize(url)
-			@url = url
+		attr_accessor :url, :response
+
+		def initialize(args)
+      @url = args[0]
+      @response = args[1]
 		end
 	end
 
