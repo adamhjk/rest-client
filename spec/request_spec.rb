@@ -211,6 +211,11 @@ describe RestClient::Request do
 		lambda { @request.process_result(res) }.should raise_error(RestClient::Redirect) { |e| e.url.should == 'http://new/resource'}
 	end
 
+	it "raises a Redirect with a response object when the response is in the 30x range" do
+		res = mock('response', :code => '301', :header => { 'Location' => 'http://new/resource' })
+		lambda { @request.process_result(res) }.should raise_error(RestClient::Redirect) { |e| e.response.code.should == 301 }
+	end
+
 	it "handles redirects with relative paths" do
 		res = mock('response', :code => '301', :header => { 'Location' => 'index' })
 		lambda { @request.process_result(res) }.should raise_error(RestClient::Redirect) { |e| e.url.should == 'http://some/index' }
